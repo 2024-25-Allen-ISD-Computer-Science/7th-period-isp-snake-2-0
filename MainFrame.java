@@ -2,6 +2,8 @@ package main;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -9,8 +11,15 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Color;
+import java.awt.Dimension;
+
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.event.ChangeEvent;
@@ -34,6 +43,8 @@ public class MainFrame extends JFrame {
 				try {
 					MainFrame frame = new MainFrame();
 					frame.setVisible(true);
+					frame.setSize(2400, 1500);
+					frame.setMinimumSize(new Dimension(1100, 1000));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -47,67 +58,105 @@ public class MainFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
+		contentPane.setLayout(new GridBagLayout());
 		contentPane.setBackground(new Color(0, 0, 0));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		
+		GridBagConstraints gbc = new GridBagConstraints();
 		
 		btnPlayButton = new JButton("Play!");
+		btnPlayButton.setFont(new Font("Calibri", Font.PLAIN, 50));
 		btnPlayButton.addActionListener(new ActionListener() {
-			/*public void actionPerformed(ActionEvent e) {
-				
-			} */
+			public void actionPerformed(ActionEvent e) {
+				try {
+                    String pythonScriptPath = "";  // Add file path to snake game later.
+                    String pythonExePath = "python";  
+
+                    ProcessBuilder processBuilder = new ProcessBuilder(pythonExePath, pythonScriptPath);
+                    processBuilder.redirectErrorStream(true);  
+
+                    Process process = processBuilder.start();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        System.out.println(line);  
+                    }
+
+                    process.waitFor();
+                } catch (IOException | InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+			} 
 		}); 
-		btnPlayButton.setBounds(178, 161, 89, 23);
-		contentPane.add(btnPlayButton);
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		gbc.insets = new Insets(20,0,0,0);
+		gbc.ipady = 40; 
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.anchor = GridBagConstraints.CENTER;
+		contentPane.add(btnPlayButton, gbc);
+		
 		
 		JButton btnTheme = new JButton("Change Theme");
-		btnTheme.setBounds(165, 55, 116, 30);
-		contentPane.add(btnTheme);
+		btnTheme.setFont(new Font("Calibri", Font.PLAIN, 50));
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		contentPane.add(btnTheme, gbc);
 		btnTheme.setVisible(false);
 		
 		lblTitle = new JLabel("Snake 2.0");
 		lblTitle.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblTitle.setFont(new Font("Calibri", Font.PLAIN, 50));
+		lblTitle.setFont(new Font("Calibri", Font.PLAIN, 200));
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setForeground(new Color(255, 255, 255));
-		lblTitle.setBounds(100, 50, 240, 100);
-		contentPane.add(lblTitle);
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		contentPane.add(lblTitle, gbc);
 		
 		JButton btnBack = new JButton("Back <-");
-		
-		btnBack.setBounds(10, 11, 90, 30);
-		contentPane.add(btnBack);
+		btnBack.setFont(new Font("Calibri", Font.PLAIN, 50));
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		contentPane.add(btnBack, gbc);
 		btnBack.setVisible(false);
 		
 		JButton btnSettings = new JButton("Settings");
-		btnSettings.setBounds(178, 191, 89, 23);
-		
-		contentPane.add(btnSettings);
+		btnSettings.setFont(new Font("Calibri", Font.PLAIN, 50));
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+		contentPane.add(btnSettings, gbc);
 		
 		JTextArea txtrCredits = new JTextArea();
 		txtrCredits.setEditable(false);
+		txtrCredits.setFont(new Font("Calibri", Font.PLAIN, 50));
 		txtrCredits.setBackground(Color.black);
 		txtrCredits.setForeground(Color.white);
 		txtrCredits.setText("Made by Alberto Svedvik and Tal Hlebnyak\r\nGUI: Alberto Svedvik\r\nGame Source Code: Tal Hlebnyak");
-		txtrCredits.setBounds(100, 55, 240, 130);
-		contentPane.add(txtrCredits);
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		contentPane.add(txtrCredits, gbc);
 		txtrCredits.setVisible(false);
 		
 		JButton btnCredits = new JButton("Credits");
-		btnCredits.setBounds(178, 221, 89, 23);
-		contentPane.add(btnCredits);
+		btnCredits.setFont(new Font("Calibri", Font.PLAIN, 50));
+		gbc.gridx = 1;
+		gbc.gridy = 3;
+		contentPane.add(btnCredits, gbc);
 		
 		JLabel lblVolume = new JLabel("Volume");
-		lblVolume.setBounds(165, 89, 116, 30);
+		gbc.gridx = 1;
+		gbc.gridy = 2;
 		lblVolume.setBackground(Color.black);
 		lblVolume.setForeground(Color.white);
-		contentPane.add(lblVolume);
+		lblVolume.setFont(new Font("Calibri", Font.PLAIN, 50));
+		contentPane.add(lblVolume, gbc);
 		
 		JSlider sliderVolume = new JSlider();
-		sliderVolume.setBounds(125, 130, 200, 26);
-		contentPane.add(sliderVolume);
+		gbc.gridx = 1;
+		gbc.gridy = 3;
+		contentPane.add(sliderVolume, gbc);
 		lblVolume.setVisible(false);
 		sliderVolume.setVisible(false);
 		
