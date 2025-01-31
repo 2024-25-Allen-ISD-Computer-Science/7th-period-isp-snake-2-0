@@ -21,6 +21,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.awt.event.ActionEvent;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -68,24 +70,29 @@ public class MainFrame extends JFrame {
 		
 		btnPlayButton = new JButton("Play!");
 		btnPlayButton.setFont(new Font("Calibri", Font.PLAIN, 50));
-		btnPlayButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-                    String pythonScriptPath = "";  // Add file path to snake game later.
-                    String pythonExePath = "python";  
+		btnPlayButton.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				try 
+				{
+                    String command[] = {"python", "snake.py"};  
 
-                    ProcessBuilder processBuilder = new ProcessBuilder(pythonExePath, pythonScriptPath);
+                    ProcessBuilder processBuilder = new ProcessBuilder(command);
                     processBuilder.redirectErrorStream(true);  
 
                     Process process = processBuilder.start();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                     String line;
-                    while ((line = reader.readLine()) != null) {
+                    while ((line = reader.readLine()) != null) 
+					{
                         System.out.println(line);  
                     }
 
-                    process.waitFor();
-                } catch (IOException | InterruptedException ex) {
+                    int exitCode = process.waitFor();
+					System.out.println("Exit Code: " + exitCode);
+                } catch (Exception ex) 
+				{
                     ex.printStackTrace();
                 }
 			} 
