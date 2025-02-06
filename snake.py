@@ -56,8 +56,8 @@ def go_down():
         head.direction = "down"
         
 def go_left():
-    if head.direction != "left":
-        head.direction = "right"
+    if head.direction != "right":
+        head.direction = "left"
         
 def go_right():
     if head.direction != "left":
