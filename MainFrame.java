@@ -74,7 +74,8 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-                    String command[] = {"python", "snake.py"};  
+                    // The way I did the file paths here only works for my computer, but it works. Have to find a way to work for all computers later on.
+					String command[] = {"\"C:\\Users\\Alberto\\AppData\\Local\\Programs\\Python\\Python313\\python.exe\"", "\"C:\\Users\\Alberto\\eclipse-workspace\\snake\\snakeGame\\py.py\""};  
 
                     ProcessBuilder processBuilder = new ProcessBuilder(command);
                     processBuilder.redirectErrorStream(true);  
