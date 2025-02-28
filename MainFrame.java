@@ -70,10 +70,8 @@ public class MainFrame extends JFrame {
 		
 		btnPlayButton = new JButton("Play!");
 		btnPlayButton.setFont(new Font("Calibri", Font.PLAIN, 50));
-		btnPlayButton.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
+		btnPlayButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				try 
 				{
                     String command[] = {"python", "snake.py"};  
@@ -152,6 +150,27 @@ public class MainFrame extends JFrame {
 		gbc.gridy = 3;
 		contentPane.add(btnCredits, gbc);
 		
+		JButton btnGuide = new JButton("Guide");
+		btnGuide.setFont(new Font("Calibri", Font.PLAIN, 50));
+		gbc.gridx = 1;
+		gbc.gridy = 4;
+		contentPane.add(btnGuide, gbc);
+		
+		JTextArea txtrGuide = new JTextArea();
+		txtrGuide.setEditable(false);
+		txtrGuide.setFont(new Font("Calibri", Font.PLAIN, 50));
+		txtrGuide.setBackground(Color.black);
+		txtrGuide.setForeground(Color.white);
+		txtrGuide.setText("Red Fruit: Normal Points, Speed\r\n"
+				+ "Black Fruit: Game Over\r\n"
+				+ "Yellow Fruit: Triple Points\r\n"
+				+ "Cyan Fruit: Speed Boost\r\n"
+				+ "Purple Fruit: Teleport to a random place on the board\r\n");
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+		contentPane.add(txtrGuide, gbc);
+		txtrGuide.setVisible(false);
+		
 		JLabel lblVolume = new JLabel("Volume");
 		gbc.gridx = 1;
 		gbc.gridy = 2;
@@ -179,6 +198,8 @@ public class MainFrame extends JFrame {
 				btnTheme.setVisible(false);
 				lblVolume.setVisible(false);
 				sliderVolume.setVisible(false);
+				btnGuide.setVisible(true);
+				txtrGuide.setVisible(false);
 			}
 		});
 		btnSettings.addActionListener(new ActionListener() {
@@ -191,7 +212,8 @@ public class MainFrame extends JFrame {
 				btnTheme.setVisible(true);
 				lblVolume.setVisible(true);
 				sliderVolume.setVisible(true);
-
+				btnGuide.setVisible(false);
+				txtrGuide.setVisible(false);
 
 				}
 		});
@@ -202,11 +224,15 @@ public class MainFrame extends JFrame {
 					lblTitle.setForeground(Color.black);
 					txtrCredits.setBackground(Color.white);
 					txtrCredits.setForeground(Color.black);
+					txtrGuide.setBackground(Color.white);
+					txtrGuide.setForeground(Color.black);
 				} else {
 					contentPane.setBackground(Color.black);
 					lblTitle.setForeground(Color.white);
 					txtrCredits.setBackground(Color.black);
 					txtrCredits.setForeground(Color.white);
+					txtrGuide.setBackground(Color.black);
+					txtrGuide.setForeground(Color.white);
 				}
 			}
 		});
@@ -227,6 +253,21 @@ public class MainFrame extends JFrame {
 				txtrCredits.setVisible(true);
 				btnCredits.setVisible(false);
 				lblVolume.setVisible(false);
+				btnGuide.setVisible(false);
+				txtrGuide.setVisible(false);
+			}
+		});
+		btnGuide.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnPlayButton.setVisible(false);
+				btnSettings.setVisible(false);
+				lblTitle.setVisible(false);
+				btnBack.setVisible(true);
+				txtrCredits.setVisible(false);
+				btnCredits.setVisible(false);
+				lblVolume.setVisible(false);
+				btnGuide.setVisible(false);
+				txtrGuide.setVisible(true);
 			}
 		});
 		
