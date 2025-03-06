@@ -1,5 +1,3 @@
-package main;
-
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -75,7 +73,7 @@ public class MainFrame extends JFrame {
 				try 
 				{
                     // The way I did the file paths here only works for my computer, but it works. Have to find a way to work for all computers later on.
-					String command[] = {"\"C:\\Users\\Alberto\\AppData\\Local\\Programs\\Python\\Python313\\python.exe\"", "\"C:\\Users\\Alberto\\eclipse-workspace\\snake\\snakeGame\\py.py\""};  
+					String command[] = {"python", "..\\snake\\snakeGame\\py.py"};  
 
                     ProcessBuilder processBuilder = new ProcessBuilder(command);
                     processBuilder.redirectErrorStream(true);  
@@ -166,7 +164,8 @@ public class MainFrame extends JFrame {
 				+ "Black Fruit: Game Over\r\n"
 				+ "Yellow Fruit: Triple Points\r\n"
 				+ "Cyan Fruit: Speed Boost\r\n"
-				+ "Purple Fruit: Teleport to a random place on the board\r\n");
+				+ "Purple Fruit: Teleport to a random place on the board\r\n"
+				+ "Red Square: Moving square that ends the game if touched\r\n");
 		gbc.gridx = 1;
 		gbc.gridy = 2;
 		contentPane.add(txtrGuide, gbc);
