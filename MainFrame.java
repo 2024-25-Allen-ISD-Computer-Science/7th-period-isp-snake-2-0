@@ -1,7 +1,10 @@
+package main;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
-
+import java.io.File;
+import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -10,7 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Dimension;
-
+import javax.sound.sampled.*;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
@@ -30,6 +33,7 @@ import javax.swing.JSlider;
 public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	private static FloatControl volumeControl;
 	private JPanel contentPane;
 	private JButton btnPlayButton;
 	private JLabel lblTitle;
@@ -45,6 +49,7 @@ public class MainFrame extends JFrame {
 					frame.setVisible(true);
 					frame.setSize(2400, 1500);
 					frame.setMinimumSize(new Dimension(1100, 1000));
+					playSound();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -102,7 +107,6 @@ public class MainFrame extends JFrame {
 		gbc.anchor = GridBagConstraints.CENTER;
 		contentPane.add(btnPlayButton, gbc);
 		
-		
 		JButton btnTheme = new JButton("Change Theme");
 		btnTheme.setFont(new Font("Calibri", Font.PLAIN, 50));
 		gbc.gridx = 1;
@@ -137,7 +141,10 @@ public class MainFrame extends JFrame {
 		txtrCredits.setFont(new Font("Calibri", Font.PLAIN, 50));
 		txtrCredits.setBackground(Color.black);
 		txtrCredits.setForeground(Color.white);
-		txtrCredits.setText("Made by Alberto Svedvik and Tal Hlebnyak\r\nGUI: Alberto Svedvik\r\nGame Source Code: Tal Hlebnyak");
+		txtrCredits.setText("Made by Alberto Svedvik and Tal Hlebnyak\r\n"
+				+ "GUI: Alberto Svedvik\r\n"
+				+ "Game Source Code: Tal Hlebnyak\r\n"
+				+ "Music by oOsongOo from Pixabay");
 		gbc.gridx = 1;
 		gbc.gridy = 1;
 		contentPane.add(txtrCredits, gbc);
@@ -182,6 +189,9 @@ public class MainFrame extends JFrame {
 		JSlider sliderVolume = new JSlider();
 		gbc.gridx = 1;
 		gbc.gridy = 3;
+		sliderVolume.setMajorTickSpacing(20);
+		sliderVolume.setPaintTicks(true);
+		sliderVolume.setPaintLabels(true);
 		contentPane.add(sliderVolume, gbc);
 		lblVolume.setVisible(false);
 		sliderVolume.setVisible(false);
@@ -239,8 +249,9 @@ public class MainFrame extends JFrame {
 		sliderVolume.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-                JSlider source = (JSlider) e.getSource();
-                int value = source.getValue();
+                float value = sliderVolume.getValue();
+                float volumeDb = volumeToDecibels(value / 100f);
+                volumeControl.setValue(volumeDb);
                 System.out.println("Slider value changed: " + value);
             }
 		});
@@ -272,4 +283,32 @@ public class MainFrame extends JFrame {
 		});
 		
 	}
+	
+	private static void playSound() {
+		try {
+            File audioFile = new File("resources\\sounds\\gameMusic.wav"); //File path for song
+            if (!audioFile.exists()) {
+                System.out.println("Audio file not found!");
+                return;
+            }
+
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            } else {
+                System.out.println("Volume control not supported");
+            }
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+            ex.printStackTrace();
+        }
+	}
+	
+	private static float volumeToDecibels(float volume) {
+        if (volume == 0) return -80f;
+        return (float) (20.0 * Math.log10(volume));
+    }
 }
